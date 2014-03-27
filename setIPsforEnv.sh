@@ -6,7 +6,7 @@ export envDetailsUrl='http://mdc2vr4073:8888/NewEnvironmentDetails/EnvironmentDe
 
 export envName=$1
 if [[ -z "$envName" ]]; then
-	export envName=mcominternal5017
+	export envName=mcominternal5024
 	echo "No environment specified so defaulting to hard-coded value $envName" 
 fi
 
