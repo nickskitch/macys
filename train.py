@@ -3,32 +3,53 @@ import os
 import subprocess
 import time
 from datetime import datetime, timedelta
+from dateutil import parser
+from dateutil.relativedelta import relativedelta
 
+minutesOfNotice=7
+minutesOfLastNotice=5
 
+debugFile=open("/tmp/train.py.log", "a")
+debugFile.writelines("\nstarted at " + str(datetime.now()))
 
-timeStart = "05:00"
-timeEnd =   "08:00"
-
-times = ("0500", "0600", "0700", "0800")
+times = ("1500","1600","1700", "1800", "1900","2100")
+departData = []
 depart = []
-
-
-    #cmd1 = "curl -s 'http://www.bart.gov/schedules/bystationresults?station=MONT&date=today&time=7%3A30%20PM' | grep Millbrae | awk '{gsub(/<[^>]+>/,\"\");print $1}'"
-
-#7%3A30%20PM
+debug = None
+debug = True
 
 for t in times:
     cmd2 = "curl -s 'http://www.bart.gov/schedules/bystationresults?station=MONT&date=today&time=" + t + "' | grep Millbrae | awk '{gsub(/<[^>]+>/,\"\");print $1}'"
-    depart.append(subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE).stdout.read().rstrip())
+    print cmd2
+    departData.append(subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE).stdout.read().rstrip())
 
-for d in depart:
-    print(d)
+for d in departData:
+    depart.extend(d.split('\n'))
+
+print depart
 
 while True:
-    #time.sleep(60)  # Delay for 1 minute (60 seconds)
-    tm = datetime.now() + timedelta(minutes=7)
     for d in depart:
-        if d < (datetime.now() + timedelta(minutes=7)):
-            print "test"
+        str2=time.strftime("%b %d %Y ") +d.strip()+'PM'
+        bartdepart_dateObject = parser.parse(str2)
+        if debug: print 'comparing ' + str(bartdepart_dateObject) + ' to ' + str(datetime.now())
+        minsFromNow_dateObject = (datetime.now() + timedelta(minutes=minutesOfNotice))
+        if bartdepart_dateObject >= datetime.now():
+            rd = relativedelta(bartdepart_dateObject,datetime.now())
 
-#terminal-notifier -message "Train leaves in 6 minutes at 5pm" -title "BART Alert"
+            if debug: print "yes, comparing " + str(bartdepart_dateObject) + " <= to " + str(minsFromNow_dateObject)
+            if bartdepart_dateObject <= minsFromNow_dateObject:
+                message = "train departs in %(minutes)d" % rd.__dict__ + " minutes: " + bartdepart_dateObject.strftime('%I:%M%p')
+                if debug: print message
+                if bartdepart_dateObject >= (datetime.now() + timedelta(minutes=minutesOfLastNotice)):
+                    cmd2 = "terminal-notifier -message '" + str(message) + "'"
+                    print cmd2
+                    subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE).stdout.read().rstrip()
+                    break
+            else:
+                print "Next depart is in %(minutes)d minutes at " % rd.__dict__ +d.strip()+'PM'
+                break
+
+    time.sleep(60)
+
+debugFile.close()
