@@ -18,6 +18,22 @@ depart = []
 debug = None
 debug = True
 
+def isPingable(site):
+    import subprocess
+    import shlex
+
+    command_line = "ping -c 1 " + site
+    args = shlex.split(command_line)
+    try:
+      subprocess.check_call(args,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+      return 1
+    except subprocess.CalledProcessError:
+      return 0
+
+
+print depart
+
+
 for t in times:
     cmd2 = "curl -s 'http://www.bart.gov/schedules/bystationresults?station=MONT&date=today&time=" + t + "' | grep Millbrae | awk '{gsub(/<[^>]+>/,\"\");print $1}'"
     print cmd2
@@ -26,7 +42,6 @@ for t in times:
 for d in departData:
     depart.extend(d.split('\n'))
 
-print depart
 
 while True:
     for d in depart:
@@ -50,6 +65,14 @@ while True:
                 print "Next depart is in %(minutes)d minutes at " % rd.__dict__ +d.strip()+'PM'
                 break
 
+    # exit the script if I'm not at work
+    if isPingable('google.com'):
+        if not isPingable('confluence'):
+            if not isPingable('jira'):
+                print 'you''re not at work; exiting'
+                exit()
+
     time.sleep(60)
 
 debugFile.close()
+
