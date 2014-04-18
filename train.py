@@ -2,6 +2,8 @@ __author__ = 'Nick'
 import os
 import subprocess
 import time
+import library
+
 from datetime import datetime, timedelta
 from dateutil import parser
 from dateutil.relativedelta import relativedelta
@@ -18,17 +20,6 @@ depart = []
 debug = None
 debug = True
 
-def isPingable(site):
-    import subprocess
-    import shlex
-
-    command_line = "ping -c 1 " + site
-    args = shlex.split(command_line)
-    try:
-      subprocess.check_call(args,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-      return 1
-    except subprocess.CalledProcessError:
-      return 0
 
 
 print depart
@@ -66,9 +57,9 @@ while True:
                 break
 
     # exit the script if I'm not at work
-    if isPingable('google.com'):
-        if not isPingable('confluence'):
-            if not isPingable('jira'):
+    if library.isPingable('google.com'):
+        if not library.isPingable('confluence'):
+            if not library.isPingable('jira'):
                 print 'you''re not at work; exiting'
                 exit()
 
