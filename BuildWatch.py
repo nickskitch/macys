@@ -33,7 +33,9 @@ def setToken():
 
 
 def message(message):
-    cmd2 = "terminal-notifier -message '" + str(message) + "'"
+    #url=r'http://mdc2vr4073:9090/MacysOrchestration/final-status.html?requestId='+requestId+'" -H "Accept-Encoding: gzip,deflate,sdch" -H "Accept-Language: en-US,en;q=0.8" -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.116 Safari/537.36" -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8" -H "Cache-Control: max-age=0" -H "Cookie: JSESSIONID='+jsession1+'; redirectUrl="/MacysOrchestration/env-live-status.html?requestId='+requestId+'" -H "Connection: keep-alive" --compressed'
+    url=r'http://mdc2vr4073:9090/MacysOrchestration/final-status.html?requestId='+requestId
+    cmd2 = "terminal-notifier -title 'buildWatch' -message '" + str(message) + "' -open '" + url + "'"
     print cmd2
     subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE).stdout.read().rstrip()
 
