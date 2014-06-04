@@ -8,16 +8,15 @@ class messageToSkype:
 
         skype = None
         self.msg = None
-        self.topic = 'Lean Lists Party Group!'
+        self.topic = 'Lean Lab - Wishlists'
         self.skype = Skype4Py.Skype()
         self.skype.Attach()
 
     def sendmessage2(self,msg):
-        print 'hi'
         for chat in self.skype.Chats:
             if chat.Topic == self.topic:
-               print 'test'
-               #chat.SendMessage(msg)
+               print 'this was have been sent to skype:' + msg
+               chat.SendMessage(msg)
 
 # for c in chats:
 #     for m in c.Messages:
