@@ -21,7 +21,7 @@ def message(message):
     print cmd2
     subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE).stdout.read().rstrip()
 
-env='mcomexternal113.fds.com'
+env='mcomexternal109.fds.com'
 
 url='http://services.'+env+'/v1/app/version'
 

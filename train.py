@@ -21,7 +21,7 @@ debug = None
 debug = True
 
 
-
+debugFile.writelines("\nbefore curl " + str(datetime.now()))
 print depart
 
 
@@ -30,11 +30,16 @@ for t in times:
     print cmd2
     departData.append(subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE).stdout.read().rstrip())
 
+debugFile.writelines("\nafter curl " + str(datetime.now()))
+
+
 for d in departData:
     depart.extend(d.split('\n'))
 
 
 while True:
+    debugFile.writelines("\nin loop " + str(datetime.now()))
+
     for d in depart:
         str2=time.strftime("%b %d %Y ") +d.strip()+'PM'
         bartdepart_dateObject = parser.parse(str2)
@@ -48,7 +53,9 @@ while True:
                 message = "train departs in %(minutes)d" % rd.__dict__ + " minutes: " + bartdepart_dateObject.strftime('%I:%M%p')
                 if debug: print message
                 if bartdepart_dateObject >= (datetime.now() + timedelta(minutes=minutesOfLastNotice)):
-                    cmd2 = "terminal-notifier -message '" + str(message) + "'"
+                    killcommand = "kill -9 "+str(os.getpid());
+
+                    cmd2 = "terminal-notifier -message '" + str(message) + "' -execute '"+killcommand + "'"
                     print cmd2
                     subprocess.Popen(cmd2, shell=True, stdout=subprocess.PIPE).stdout.read().rstrip()
                     break
@@ -56,12 +63,20 @@ while True:
                 print "Next depart is in %(minutes)d minutes at " % rd.__dict__ +d.strip()+'PM'
                 break
 
-    # exit the script if I'm not at work
-    if library.isPingable('google.com'):
-        if not library.isPingable('confluence'):
-            if not library.isPingable('jira'):
-                print 'you''re not at work; exiting'
-                exit()
+    debugFile.writelines("\nbefore ispingable " + str(datetime.now()))
+    try:
+        debugFile.writelines(library.isPingable('google.com') + str(datetime.now()))
+
+        # exit the script if I'm not at work
+        if library.isPingable('google.com'):
+            if not library.isPingable('confluence'):
+                if not library.isPingable('jira'):
+                    print 'you''re not at work; exiting'
+                    exit()
+    except:
+        debugFile.writelines('error when pinging' + str(datetime.now()))
+
+    debugFile.writelines("\nafter ispingable " + str(datetime.now()))
 
     time.sleep(60)
 
