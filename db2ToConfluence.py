@@ -17,7 +17,7 @@ import ibm_db
 #conn = ibm_db.connect("MCYPRDST","mcyapp","dbacce5s")
 
 #import DB2
-ibm_db.connect("DATABASE=MCYPRDST;HOSTNAME=32.83.113.246;PORT=60000;PROTOCOL=TCPIP;UID=mcyapp;PWD=dbacce5s;", "", "")
+ibm_db.connect("DATABASE=MCYPRDST;HOSTNAME=32.83.113.246;PORT=60000;PROTOCOL=TCPIP;UID=mcyapp;PWD=;", "", "")
 
 #conn = DB2.connect(dsn='32.83.113.246', uid='mcyapp', pwd='dbacce5s')
 
