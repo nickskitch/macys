@@ -10,11 +10,11 @@ __author__ = 'Nick'
 
 import ibm_db
 #DSN="DRIVER={IBM DB2 CLI DRIVER};DATABASE=%(name)s;HOSTNAME=%(host)s;PORT=%(port)s;PROTOCOL=TCPIP;UID=%(user)s;PWD=%(pass)s;"
-#dsn="DRIVER={IBM DB2 CLI DRIVER};DATABASE=MCYPRDST;HOSTNAME=32.83.113.246;PORT=60000;PROTOCOL=TCPIP;UID=mcyapp;PWD=dbacce5s;"
+dsn="DRIVER={IBM DB2 CLI DRIVER};DATABASE=MCYPRDST;HOSTNAME=32.83.113.246;PORT=60000;PROTOCOL=TCPIP;UID=mcyapp;PWD=dbacce5s;"
 
 #conn = ibm_db.connect(dsn,'','')
 
-#conn = ibm_db.connect("MCYPRDST","mcyapp","dbacce5s")
+#conn = ibm_db.connect("MCYPRDST","mcyapp","")
 
 #import DB2
 ibm_db.connect("DATABASE=MCYPRDST;HOSTNAME=32.83.113.246;PORT=60000;PROTOCOL=TCPIP;UID=mcyapp;PWD=;", "", "")
