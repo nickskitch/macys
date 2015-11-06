@@ -3,8 +3,8 @@
 ## Initialize the cookie-jar
 curl --cookie-jar cjar --output /dev/null https://www.okcupid.com/login
 
-export USERNAME='onestrangegravy@gmail.com'
-export PASSWORD='nNpxvj9M'
+export USERNAME=''
+export PASSWORD=''
 
 ## Login and save the resulting HTML file as loginResult.html (for debugging purposes)
 curl --cookie cjar --cookie-jar cjar \
