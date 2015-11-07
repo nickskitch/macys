@@ -3,5 +3,5 @@ from pyokc import pyokc
 u = pyokc.User()
 
 
-u.message('blablo26', 'I like your hair. It is yours, right?')
-u.rate('blablo26', 1)
+u.message('blablo2633', 'test msg')
+u.rate('blablo2633', 1)
